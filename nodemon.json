@@ -1,0 +1,10 @@
+{
+  "watch": ["api/src"],
+  "ext": "js,json",
+  "exec": "node api/src/index.js",
+  "delay": "3000",
+  "ignore": ["node_modules/*", "api/src/tests/*"],
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
