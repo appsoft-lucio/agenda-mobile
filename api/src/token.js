@@ -9,7 +9,6 @@ function CreateToken(id_user) {
 
 function ValidateToken(req, res, next) {
   const authToken = req.headers["authorization"]; // Captura o header de autorização
-  console.log("Auth Token recebido:", authToken); // Log do token recebido
 
   if (!authToken) {
     return res.status(401).json({ error: "Token não informado" });
@@ -22,11 +21,9 @@ function ValidateToken(req, res, next) {
 
   jwt.verify(token, secretToken, (err, tokenDecoded) => {
     if (err) {
-      console.error("Erro ao validar o token:", err.message); // Log detalhado do erro
       return res.status(401).json({ error: "Token inválido" });
     }
 
-    console.log("Token decodificado:", tokenDecoded); // Log do token decodificado
     req.id_user = tokenDecoded.id_user; // Define o ID do usuário no request
     next();
   });

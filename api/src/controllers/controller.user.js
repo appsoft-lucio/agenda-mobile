@@ -21,4 +21,14 @@ async function Login(req, res) {
   else res.status(200).json(user);
 }
 
-export default { Inserir, Login };
+async function Profile(req, res) {
+  const id_user = req.id_user;
+  try {
+    const user = await serviceUser.Profile(id_user);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao listar dados do usuário" });
+  }
+}
+
+export default { Inserir, Login, Profile };

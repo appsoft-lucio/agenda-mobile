@@ -1,29 +1,53 @@
-import repositoryUser from "../repository/repository.user.js";
+import repositoryAppointment from "../repository/repository.appointment.js";
 
-async function Listar(id_user) {
-  console.log("ID recebido no serviço:", id_user); // Log do ID recebido no serviço
+async function ListarByUser(id_user) {
+  try {
+    // Verifica se o id_user é válido
+    if (!id_user) {
+      throw new Error("ID de usuário não fornecido.");
+    }
 
-  const appointments = await repositoryUser.Listar(id_user);
-  console.log("Resultado da consulta no banco:", appointments); // Adicione esse log
-
-  if (!appointments || appointments.length === 0) {
-    console.log("Nenhum agendamento encontrado.");
-  }
-
-  return appointments;
-
-  /*try {
     // Chama o repositório para buscar os agendamentos
-    const appointments = await repositoryUser.Listar(id_user);
-    console.log(
-      "Dados de agendamentos retornados pelo repositório:",
-      appointments
-    ); // Log dos dados
+    const appointments = await repositoryAppointment.ListarByUser(id_user);
+
+    // Verifica se não há agendamentos
+    if (appointments.length === 0) {
+      return { error: "Nenhum agendamento encontrado para este usuário." };
+    }
+
+    // Retorna os agendamentos encontrados
     return appointments;
   } catch (error) {
-    console.error("Erro ao buscar agendamentos no serviço:", error.message); // Log de erro
-    throw error; // Propaga o erro para o controller
-  }*/
+    // Retorna erro genérico se algo falhar
+    return { error: error.message || "Erro ao listar agendamentos." };
+  }
 }
 
-export default { Listar };
+async function Inserir(
+  id_user,
+  id_doctor,
+  id_service,
+  booking_date,
+  booking_hour
+) {
+  const appointment = await repositoryAppointment.Inserir(
+    id_user,
+    id_doctor,
+    id_service,
+    booking_date,
+    booking_hour
+  );
+
+  return appointment;
+}
+
+async function Excluir(id_user, id_appointment) {
+  const appointment = await repositoryAppointment.Excluir(
+    id_user,
+    id_appointment
+  );
+
+  return appointment;
+}
+
+export default { ListarByUser, Inserir, Excluir };

@@ -18,4 +18,11 @@ async function Inserir(name, email, password) {
   return user[0];
 }
 
-export default { ListarByEmail, Inserir };
+async function Profile(id_user) {
+  const sqlSelect = `SELECT id_user, name, email FROM users WHERE id_user = ?`;
+  const user = await query(sqlSelect, [id_user]);
+
+  return user[0] || null;
+}
+
+export default { ListarByEmail, Inserir, Profile };
